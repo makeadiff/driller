@@ -1,0 +1,12 @@
+#content {
+	margin-top: 60px;
+}
+.complete {
+	background-color: green;
+}
+.incomplete {
+	background-color: red;	
+}
+.progress div {
+	float:left;
+}
