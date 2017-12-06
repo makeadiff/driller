@@ -49,6 +49,11 @@ function getListingData($parameter, $id) {
 		$next_level_key = '';
 		$data = getIndividualData($all_users);
 
+	} elseif($parameter == 'all_in_city_id') {
+		$all_users = idNameFormat($model->getUsers(array('city_id' => $QUERY['all_in_city_id'])));
+		$next_level_key = '';
+		$data = getIndividualData($all_users);
+
 	} elseif($parameter == 'city_id') {
 		if(isAssoc($structure[$parameter])) {
 			foreach ($structure[$parameter] as $key => $value) {

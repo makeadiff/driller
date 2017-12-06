@@ -1,6 +1,9 @@
 <h1><?php echo $page_title ?></h1>
 
 <?php
+if($current_level == 'city_id') {
+	echo "<a href='?all_in_city_id=$QUERY[city_id]&data_type=$data_type'>Show All Volunteers</a>";
+}
 foreach($data as $data_row) {
 	$title = i($data_row, 'title');
 	if($title) echo "<h3>$title</h3>";

@@ -13,10 +13,10 @@ class Common {
 		global $year;
 		$where = "1=1";
 
-		if(!empty($source['city_id'])) {
-			$where = "U.city_id = " . $source['city_id'];
-		} elseif(!empty($source['center_id'])) {
+		if(!empty($source['center_id'])) {
 			$where = "C.id = " . $source['center_id'];
+		} elseif(!empty($source['city_id'])) {
+			$where = "U.city_id = " . $source['city_id'];
 		} elseif(!empty($source['batch_id'])) {
 			$where = "B.id = " . $source['batch_id'];
 

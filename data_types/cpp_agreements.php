@@ -8,6 +8,7 @@ $structure = array(
 						'vertical_id'	=> array('name', 'user_count', 'agreement_percentage'),
 					),
 	'center_id'	=> array('name', 'user_count', 'agreement_percentage'),
+	'all_in_city_id'	=> array('name', 'date', 'agreement'),
 	'batch_id'	=> array('name', 'date', 'agreement'),
 	'vertical_id'=>array('name', 'date', 'agreement'),
 );

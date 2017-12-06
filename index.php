@@ -8,6 +8,8 @@ require(joinPath('data_types', $data_type . '.php'));
 
 $order = array_reverse(array_keys($structure));
 $data = array();
+$current_level = 'national';
+
 foreach ($order as $parameter) {
 	$id = i($QUERY, $parameter);
 	if($id or $parameter == 'national') {
@@ -16,6 +18,7 @@ foreach ($order as $parameter) {
 
 		$page_title = getTitle($id, $parameter);
 		$data = getListingData($parameter, $id);
+		$current_level = $parameter;
 
 		break;
 	}
