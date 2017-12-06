@@ -2,7 +2,7 @@
 
 <?php
 foreach($data as $data_row) {
-	$title = $data_row['title'];
+	$title = i($data_row, 'title');
 	if($title) echo "<h3>$title</h3>";
 
 	$first_row = reset($data_row['data']);

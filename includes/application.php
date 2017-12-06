@@ -3,7 +3,9 @@
 function getTitle($id, $type) {
 	global $model, $page_title;
 
-	if($type == 'batch_id') {
+	if($type == 'user_id') {
+		$name = $model->getTeacherName($id);
+	} elseif($type == 'batch_id') {
 		$name = $model->getBatchName($id);
 	} elseif($type == 'center_id') {
 		$name = $model->getCenterName($id);
@@ -19,7 +21,7 @@ function getTitle($id, $type) {
 }
 
 function getListingData($parameter, $id) {
-	global $model, $page_title, $structure, $order, $QUERY;
+	global $model, $structure, $order, $QUERY;
 
 	$order_index = array_search($parameter, $order);
 	$next_level_key = i($order, $order_index - 1);
@@ -27,7 +29,11 @@ function getListingData($parameter, $id) {
 	$data = array();
 	$split_data = array();
 
-	if($parameter == 'batch_id') {
+	if($parameter == 'user_id') {
+		$next_level_key = '';
+		$data = getUserData($id);
+
+	} elseif($parameter == 'batch_id') {
 		$all_teachers = idNameFormat($model->getTeachers(array('batch_id' => $id)));
 		$next_level_key = '';
 		$data = getIndividualData($all_teachers);
@@ -74,7 +80,13 @@ function getListingData($parameter, $id) {
 		$data = getCollectiveData($all_cities, $next_level_key);
 	}
 
-	if(!$data and $split_data) {
+	if(isset($data['metadata'])) {
+		$return_data = array($data);
+
+	} elseif(isset($data[0]['metadata'])) {
+		$return_data = $data;
+
+	} elseif(!$data and $split_data) {
 		$return_data = $split_data;
 
 	} elseif($data and !$split_data) {
