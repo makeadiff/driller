@@ -103,9 +103,10 @@ function getUserData($user_id) {
 
 	 	$response_data = array();
 	 	foreach ($all_questions as $question_id => $question) {
+	 		$response = i($responses, $question_id, 0);
 	 		$response_data[] = array(
 	 			'question'				=> $question,
-	 			'response_percentage'	=> $responses[$question_id] * 10
+	 			'response_percentage'	=> $response * 10
 	 		);
 	 	}
 
