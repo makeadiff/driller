@@ -13,25 +13,28 @@ class Common {
 		global $year;
 		$where = "1=1";
 
-		if(!empty($source['center_id'])) {
-			$where = "C.id = " . $source['center_id'];
-		} elseif(!empty($source['city_id'])) {
-			$where = "U.city_id = " . $source['city_id'];
-		} elseif(!empty($source['batch_id'])) {
+		if(!empty($source['batch_id'])) {
 			$where = "B.id = " . $source['batch_id'];
 
+		} elseif(!empty($source['center_id'])) {
+			$where = "C.id = " . $source['center_id'];
+
 		} elseif(!empty($source['vertical_id'])) {
-			return $this->sql->getAll("SELECT U.id,U.name 
+			return $this->sql->getAll("SELECT U.id,U.name,U.email,U.phone 
 				FROM User U
 				INNER JOIN UserGroup UG ON UG.user_id=U.id
 				INNER JOIN `Group` G ON G.id=UG.group_id
 				WHERE U.status='1' AND UG.year='$year' AND U.user_type='volunteer' AND G.vertical_id=$source[vertical_id]
 				ORDER BY U.name");
+
+		} elseif(!empty($source['city_id'])) {
+			$where = "U.city_id = " . $source['city_id'];
+
 		} else {
 			return array();
 		}
 
-		$teachers = $this->sql->getAll("SELECT U.id,U.name 
+		$teachers = $this->sql->getAll("SELECT U.id,U.name,U.email,U.phone
 			FROM User U
 			INNER JOIN UserBatch UB ON UB.user_id=U.id
 			INNER JOIN Batch B ON B.id=UB.batch_id
@@ -53,7 +56,7 @@ class Common {
 		if(!empty($source['city_id']) and $source['city_id']) $where[] = 'U.city_id=' . $source['city_id'];
 		if(!empty($source['vertical_id'])) $where[] = 'G.vertical_id=' . $source['vertical_id'];
 
-		return $this->sql->getAll("SELECT U.id,U.name 
+		return $this->sql->getAll("SELECT U.id,U.name,U.email,U.phone 
 				FROM User U
 				INNER JOIN UserGroup UG ON UG.user_id=U.id
 				INNER JOIN `Group` G ON G.id=UG.group_id
@@ -92,6 +95,8 @@ class Common {
 
 	public function getBatches($center_id)
 	{
+		global $year;
+
 		return $this->sql->getAll("SELECT id,CONCAT((CASE day
 										WHEN '0' THEN 'Sunday'
 										WHEN '1' THEN 'Monday'
@@ -101,8 +106,10 @@ class Common {
 										WHEN '5' THEN 'Friday'
 										WHEN '6' THEN 'Saturday'
 										ELSE ''
-										END), ' ', TIME_FORMAT(class_time, '%l:%i %p')) AS name FROM Batch WHERE status='1' AND center_id=$center_id 
-										ORDER BY day");
+										END), ' ', TIME_FORMAT(class_time, '%l:%i %p')) AS name 
+									FROM Batch 
+									WHERE status='1' AND center_id=$center_id AND year=$year
+									ORDER BY day");
 	}
 
 	public function getBatchName($batch_id)

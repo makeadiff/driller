@@ -2,16 +2,16 @@
 $page_title = 'CPP Agreements';
 
 $structure = array(
-	'national'	=> array('name', 'user_count', 'agreement_percentage'),
+	'national'	=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
 	'city_id'	=> array(
-						'center_id'		=> array('name', 'user_count', 'agreement_percentage'),
-						'vertical_id'	=> array('name', 'user_count', 'agreement_percentage'),
+						'center_id'		=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
+						'vertical_id'	=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
 					),
-	'center_id'	=> array('name', 'user_count', 'agreement_percentage'),
-	'all_in_city_id'	=> array('name', 'date', 'agreement'),
-	'batch_id'	=> array('name', 'date', 'agreement'),
-	'vertical_id'=>array('name', 'date', 'agreement'),
+	'center_id'	=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
+	'batch_id'	=> array('name', 'date', 'agreed_count', 'agreement'),
+	'vertical_id'=>array('name', 'date', 'agreed_count', 'agreement'),
 );
+$custom_pages = ['data_types/cpp_agreements/list_volunteers_not_signed.php' => 'List all volunteers who have not signed the agreement'];
 
 $cpp_agreement_model = new CPP_Agreement;
 
@@ -32,10 +32,11 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 		$agreement_percentage = round($agreed_users / $user_count * 100, 2);
 
 		$data_row = array(
-			'id'	=> $id,
-			'name'	=> $row['name'],
-			'user_count' => $user_count,
-			'agreement_percentage'	=> $agreement_percentage
+			'id'			=> $id,
+			'name'			=> $row['name'],
+			'user_count' 	=> $user_count,
+			'agreed_count'	=> $agreed_users,
+			'agreement_percentage'	=> $agreement_percentage,
 		);
 
 		$data[] = $data_row;

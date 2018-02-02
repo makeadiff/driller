@@ -2,8 +2,14 @@
 
 <?php
 if($current_level == 'city_id') {
-	echo "<a href='?all_in_city_id=$QUERY[city_id]&data_type=$data_type'>Show All Volunteers</a>";
+	echo "<a href='?all_in_city_id=$QUERY[city_id]&data_type=$data_type'>Show All Volunteers</a><br />";
 }
+if(isset($custom_pages)) {
+	foreach ($custom_pages as $page => $title) {
+		echo "<a href='" . getLink($page, array(), true) . "'>$title</a><br />";
+	}
+}
+
 $total_row = array();
 foreach($data as $data_row) {
 	$title = i($data_row, 'title');
