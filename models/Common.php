@@ -55,13 +55,41 @@ class Common {
 
 		if(!empty($source['city_id']) and $source['city_id']) $where[] = 'U.city_id=' . $source['city_id'];
 		if(!empty($source['vertical_id'])) $where[] = 'G.vertical_id=' . $source['vertical_id'];
+		if(!empty($source['group_id'])) $where[] = 'UG.group_id=' . $source['group_id'];
+		if(!empty($source['group_type'])) $where[] = 'G.type="' . $source['group_type'] . '"';
 
-		return $this->sql->getAll("SELECT U.id,U.name,U.email,U.phone 
+		return $this->sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.mad_email,U.phone 
 				FROM User U
 				INNER JOIN UserGroup UG ON UG.user_id=U.id
 				INNER JOIN `Group` G ON G.id=UG.group_id
 				WHERE U.status='1' AND UG.year='$year' AND U.user_type='volunteer' AND " . implode(' AND ', $where) . "
 				ORDER BY U.name");
+	}
+
+	/// :TODO: Very quickly thown together function. Make this better. Include groups, option to get non-'volunteer'.
+	public function getUser($user_id)
+	{
+		global $year;
+
+		return $this->sql->getAssoc("SELECT U.id,U.name,U.email,U.mad_email,U.phone,U.sex,
+					U.photo,U.joined_on,U.address,U.birthday,U.left_on,U.reason_for_leaving,
+					U.user_type,U.status,U.credit,U.city_id,
+					C.name AS city, GROUP_CONCAT(DISTINCT G.name SEPARATOR ',')
+				FROM User U 
+				INNER JOIN City C ON U.city_id=C.id 
+				INNER JOIN UserGroup UG ON U.id=UG.user_id
+				INNER JOIN `Group` G ON G.id=UG.group_id
+				WHERE U.status='1' AND U.user_type='volunteer' AND U.id=$user_id AND UG.year=$year
+				GROUP BY UG.user_id");
+	}
+
+	public function getUserGroups($user_id)
+	{
+		global $year;
+		return $this->sql->getAll("SELECT G.id, G.name, G.vertical_id, G.type 
+				FROM `Group` G
+				INNER JOIN UserGroup UG ON UG.group_id=G.id
+				WHERE UG.year=$year AND UG.user_id=$user_id");
 	}
 
 	public function getCities()
