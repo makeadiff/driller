@@ -58,12 +58,14 @@ class Common {
 		if(!empty($source['group_id'])) $where[] = 'UG.group_id=' . $source['group_id'];
 		if(!empty($source['group_type'])) $where[] = 'G.type="' . $source['group_type'] . '"';
 
-		return $this->sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.mad_email,U.phone 
+		$query = "SELECT DISTINCT U.id,U.name,U.email,U.mad_email,U.phone 
 				FROM User U
 				INNER JOIN UserGroup UG ON UG.user_id=U.id
 				INNER JOIN `Group` G ON G.id=UG.group_id
 				WHERE U.status='1' AND UG.year='$year' AND U.user_type='volunteer' AND " . implode(' AND ', $where) . "
-				ORDER BY U.name");
+				ORDER BY U.name";
+
+		return $this->sql->getAll($query);
 	}
 
 	/// :TODO: Very quickly thown together function. Make this better. Include groups, option to get non-'volunteer'.
@@ -79,7 +81,7 @@ class Common {
 				INNER JOIN City C ON U.city_id=C.id 
 				INNER JOIN UserGroup UG ON U.id=UG.user_id
 				INNER JOIN `Group` G ON G.id=UG.group_id
-				WHERE U.status='1' AND U.user_type='volunteer' AND U.id=$user_id AND UG.year=$year
+				WHERE U.status='1' AND U.id=$user_id AND UG.year=$year
 				GROUP BY UG.user_id");
 	}
 
