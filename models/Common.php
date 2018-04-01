@@ -159,10 +159,13 @@ class Common {
 									WHERE Batch.id=$batch_id");
 	}
 
-	public function getTeacherName($user_id) 
+	public function getUserName($user_id) 
 	{
 		return $this->sql->getOne("SELECT name FROM User WHERE id=$user_id");
 	}
+
+	/// :DEPRICATED: :ALIAS:
+	public function getTeacherName($user_id) { return $this->getUserName($user_id);	}
 
 	public function getStudents($user_id) 
 	{
