@@ -1,6 +1,7 @@
 <?php
 require './common.php';
 
+$no_cache = i($QUERY, 'no_cache', false);
 $data_type = i($QUERY, 'data_type');
 
 if(!$data_type or !file_exists(joinPath('data_types', $data_type . '.php'))) die("Invalid Data Type");
@@ -17,7 +18,12 @@ foreach ($order as $parameter) {
 		$next_level_key = i($order, $order_index - 1);
 
 		$page_title = getTitle($id, $parameter);
-		$data = getListingData($parameter, $id);
+
+		list($data, $cache_key) = getCacheAndKey('Driller', ['data_type' => $data_type, 'parameter' => $parameter, 'id' => $id]);
+		if(!$data) {
+			$data = getListingData($parameter, $id);
+			setCache($cache_key, $data);
+		}
 		$current_level = $parameter;
 
 		break;

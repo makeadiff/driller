@@ -46,8 +46,8 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 			$completion_percentage = round($total_response_count / $possible_response_count * 100, 2);
 
 		$data[$id] = array(
-			'id'						=> $id,
-			'name'						=> $row['name'],
+			'id'	=> $id,
+			'name'	=> $row['name'],
 		);
 		if($teacher_count != -1) $data[$id]['teacher_count'] = $teacher_count;
 		else $data[$id]['student_count'] = $total_student_count;

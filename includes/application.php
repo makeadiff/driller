@@ -1,4 +1,5 @@
 <?php
+require(dirname(dirname(__FILE__)) . '/../reports/includes/application.php');
 
 function getTitle($id, $type) {
 	global $model, $page_title;

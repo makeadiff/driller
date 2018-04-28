@@ -79,9 +79,9 @@ class Common {
 					C.name AS city, GROUP_CONCAT(DISTINCT G.name SEPARATOR ',')
 				FROM User U 
 				INNER JOIN City C ON U.city_id=C.id 
-				INNER JOIN UserGroup UG ON U.id=UG.user_id
-				INNER JOIN `Group` G ON G.id=UG.group_id
-				WHERE U.status='1' AND U.id=$user_id AND UG.year=$year
+				LEFT JOIN UserGroup UG ON U.id=UG.user_id AND UG.year=$year
+				LEFT JOIN `Group` G ON G.id=UG.group_id
+				WHERE U.status='1' AND U.id=$user_id 
 				GROUP BY UG.user_id");
 	}
 
