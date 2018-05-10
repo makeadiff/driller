@@ -2,7 +2,6 @@
 require '../../../common.php';
 $cpp_agreement_model = new CPP_Agreement;
 
-$year = 2017;
 $model = new Common;
 
 $users = keyFormat($model->getUsers($QUERY));
