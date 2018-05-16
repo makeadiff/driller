@@ -77,8 +77,12 @@ function getListingData($parameter, $id) {
 				}
 			}
 		} else {
+			$city_id = i($QUERY, 'city_id', 0);
 			$all_centers = $model->getCenters($city_id);
-			$data = getCollectiveData($all_centers, $next_level_key);
+			if($next_level_key)
+				$data = getCollectiveData($all_centers, $next_level_key);
+			else 
+				$data = getIndividualData($all_centers);
 		}
 
 	} elseif($parameter == 'national') { // National
