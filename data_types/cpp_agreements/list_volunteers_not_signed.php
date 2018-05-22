@@ -1,5 +1,5 @@
 <?php
-require '../../../common.php';
+require dirname(dirname(dirname(dirname(__FILE__)))) . '/common/common.php';
 $cpp_agreement_model = new CPP_Agreement;
 
 $model = new Common;
