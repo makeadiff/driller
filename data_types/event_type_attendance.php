@@ -25,7 +25,9 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 	foreach ($all_units as $row) {
 		$id = $row['id'];
 
-		$all_users = idNameFormat($model->getUsers(array_merge(array($next_level_key => $id), $extra_user_filter))); // Different data based on City, Center, Batch, etc.
+		$user_search_parameters = array_merge([$next_level_key => $id], $extra_user_filter);
+		// dump($user_search_parameters);
+		$all_users = idNameFormat($model->getUsers($user_search_parameters)); // Different data based on City, Center, Batch, etc.
 		$user_count = count($all_users);
 		if(!$user_count) continue;
 
@@ -33,15 +35,13 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 		$attended_count = count($attended);
 		$attended_percentage = round($attended_count / $user_count * 100, 2);
 
-		$data_row = array(
-			'id'	=> $id,
-			'name'	=> $row['name'],
-			'user_count' => $user_count,
-			'attended'	 => $attended_count,
+		$data[] = array(
+			'id'					=> $id,
+			'name'					=> $row['name'],
+			'user_count' 			=> $user_count,
+			'attended'	 			=> $attended_count,
 			'attended_percentage'	=> $attended_percentage
 		);
-
-		$data[] = $data_row;
 	}
 
 	return $data;
@@ -51,13 +51,23 @@ function getIndividualData($users) {
 	global $event_model, $event_type_id, $config;
 
 	$attendance = keyFormat($event_model->getCollectiveStatus($event_type_id, array_keys($users)));
-	$data = array();
+	$data = array(); 
 	foreach ($users as $id => $name) {
-		$data[$id] = ['id'	=> $id,'name'	=> $name];
+		$data[$id] = [
+			'id'	=> $id,
+			'name'	=> $name,
+			'attended' 	=> '',
+			'event_date'=> '',
+		];
+
+		$event_info = '';
+		if(isset($attendance[$id]) and $attendance[$id]['present'] == '1') {
+			$event_info = "<a href='../envite/attendance.php?event_id={$attendance[$id]['event_id']}'>" . date($config['time_format_php'], strtotime($attendance[$id]['starts_on'])) . "</a>";
+		}
 
 		if(isset($attendance[$id]))	{
-			$data[$id]['attended'] 		= ($attendance[$id]['present'] == '1') ? 'Yes' : 'No';
-			$data[$id]['attended_on'] 	= ($attendance[$id]['present'] == '1') ? date($config['time_format_php'], strtotime($attendance[$id]['starts_on'])) : '';
+			$data[$id]['attended'] 		= ($attendance[$id]['present'] == '1') ? '<span class="success">Yes</span>' : '<span class="error">No</span>';
+			$data[$id]['attended_on'] 	= $event_info;
 		}
 	}
 
