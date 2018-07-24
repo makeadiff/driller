@@ -1,5 +1,4 @@
 <?php
-
 class CFR_Participation {
 	private $sql;
 

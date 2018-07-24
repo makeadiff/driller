@@ -2,7 +2,9 @@
 
 <?php
 if($current_level == 'city_id') {
-	echo "<a href='?all_in_city_id=$QUERY[city_id]&data_type=$data_type'>Show All Volunteers</a><br />";
+	$parameters = ['all_in_city_id' => $QUERY['city_id'], 'data_type' => $data_type];
+	if(isset($QUERY['event_type_id'])) $parameters['event_type_id'] = i($QUERY, 'event_type_id');
+	echo "<a href='" . getLink('index.php', $parameters) . "'>Show All Volunteers</a><br />";
 }
 if(isset($custom_pages)) {
 	foreach ($custom_pages as $page => $title) {
@@ -21,16 +23,18 @@ foreach($data as $data_row) {
 
 <table class="table table-striped">
 	<tr>
-		<?php 
-		foreach ($first_row as $key => $value) {
-			if($key == 'id') continue;
-			elseif($key == 'name') $total_row[$key] = 'Total';
-			else {
-				$total_row[$key] = 0;
-			}
-
-			echo "<th width='$width%'>" . format($key) . "</th>";
-		} 
+		<?php
+		if($first_row) {
+			foreach ($first_row as $key => $value) {
+				if($key == 'id') continue;
+				elseif($key == 'name') $total_row[$key] = 'Total';
+				else {
+					$total_row[$key] = 0;
+				}
+	
+				echo "<th width='$width%'>" . format($key) . "</th>";
+			} 
+		}
 		?>
 	</tr>
 	<?php foreach ($data_row['data'] as $row) { ?>
@@ -62,21 +66,23 @@ foreach($data as $data_row) {
 	</tr>
 	<?php }
 	echo "<tr>";
-	foreach($first_row as $key => $value) {
-		if($key == 'id') continue;
-		
-		if(stripos($key, 'percent')) {
-			$value = round($total_row[$key . '_total'] / $total_row[$key . '_count'], 2);
-			?>
-			<td class="progress" title="<?php echo $value ?>%">
-				<?php if($value) { ?><div class="complete" style="width:<?php echo $value ?>%;">&nbsp;</div><?php } ?>
-				<?php if(100-$value > 0) { ?><div class="incomplete" style="width:<?php echo 100-$value ?>%;">&nbsp;</div><?php } ?>
-			</td>
-			<?php
-		} else {
-			$value = $total_row[$key];
+	if($first_row) {
+		foreach($first_row as $key => $value) {
+			if($key == 'id') continue;
+			
+			if(stripos($key, 'percent')) {
+				$value = round($total_row[$key . '_total'] / $total_row[$key . '_count'], 2);
+				?>
+				<td class="progress" title="<?php echo $value ?>%">
+					<?php if($value) { ?><div class="complete" style="width:<?php echo $value ?>%;">&nbsp;</div><?php } ?>
+					<?php if(100-$value > 0) { ?><div class="incomplete" style="width:<?php echo 100-$value ?>%;">&nbsp;</div><?php } ?>
+				</td>
+				<?php
+			} else {
+				$value = $total_row[$key];
 
-			echo "<td><strong>" . $value . "</storng></td>";
+				echo "<td><strong>" . $value . "</strong></td>";
+			}
 		}
 	}
 	echo "</tr>";
