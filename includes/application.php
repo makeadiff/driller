@@ -117,16 +117,6 @@ function isAssoc(array $arr) {
     return array_keys($arr) !== range(0, count($arr) - 1);
 }
 
-function idNameFormat($data, $fields=array('id','name')) {
-	$return = array();
-	foreach($data as $row) {
-		if(isset($fields[1])) $return[$row[$fields[0]]] = stripslashes($row[$fields[1]]);
-		else $return[$row[$fields[0]]] = $row;
-	}
-	
-	return $return;
-}
-
 function oneFormat($data) {
 	return current($data);
 }
