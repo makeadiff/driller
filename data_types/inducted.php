@@ -20,6 +20,7 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 	global $model, $event_model, $vlc_event_type_id;
 
 	$data = array();
+	$joined_on_cutoff = '2018-01-01';
 
 	foreach ($all_units as $row) {
 		$id = $row['id'];
@@ -33,29 +34,29 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 		$attended = keyFormat($event_model->getCollectiveStatus($vlc_event_type_id, array_keys($all_users), '1'));
 		$new_vols = 0;
 		$continuing_vols = 0;
+		$continuing_vols_attended = 0;
+		$new_vols_attended = 0;
 		foreach ($all_users as $user_id => $user) {
-			if(isset($attended[$user_id])) { // This user hasn't attended. Check if old vol.
-				if($user['joined_on'] < '2018-01-01') {
-					$continuing_vols++;
-				} else {
-					$new_vols++;
-				}
+			if($user['joined_on'] < $joined_on_cutoff) {
+				$continuing_vols++;
+				if(isset($attended[$user_id])) 
+					$continuing_vols_attended++;
+
+			} else {
+				$new_vols++;
+				if(isset($attended[$user_id])) 
+					$new_vols_attended++;
 			}
 		}
-
-		$attended_count = count($attended);
-		$new_to_old_ratio = 0;
-		if($continuing_vols) $new_to_old_ratio = round($new_vols / ($continuing_vols + $new_vols) * 100, 2);
-		if($new_to_old_ratio > 100) $new_to_old_ratio = 100;
 
 		$data[] = array(
 			'id'					=> $id,
 			'name'					=> $row['name'],
 			'user_count' 			=> $user_count,
-			'attended'	 			=> $attended_count,
-			'new_volunteers'		=> $new_vols,
 			'continuing_volunteers'	=> $continuing_vols,
-			'new_to_old_ratio_percentage'	=> $new_to_old_ratio
+			'continuing_volunteers_attended'	=> $continuing_vols_attended,
+			'new_volunteers'		=> $new_vols,
+			'new_volunters_attended'=> $new_vols_attended,
 		);
 	}
 
