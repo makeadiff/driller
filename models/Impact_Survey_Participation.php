@@ -48,7 +48,7 @@ class Impact_Survey_Participation {
 
 	public function getLatestISEvent()
 	{
-		return $this->sql->getOne("SELECT id FROM IS_Event ORDER BY added_on DESC LIMIT 0,1");
+		return $this->sql->getAssoc("SELECT id,name,added_on FROM IS_Event ORDER BY added_on DESC LIMIT 0,1");
 	}
 
 	public function getISQuestions()

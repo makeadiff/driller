@@ -1,11 +1,12 @@
 <?php
-$page_title = 'Impact Survey Reports';
-
 $ISParticipation = new Impact_Survey_Participation();
 
 $all_questions = $ISParticipation->getISQuestions();
 $question_count = count($all_questions);
-$is_event_id = i($QUERY, 'is_event_id', $ISParticipation->getLatestISEvent());
+$latest_is_event = i($QUERY, 'is_event_id', $ISParticipation->getLatestISEvent());
+$is_event_id = $latest_is_event['id'];
+
+$page_title = 'Impact Survey Adoption for ' . date('M Y', strtotime($latest_is_event['added_on']));
 
 $structure = array(
 	'national'	=> array('name', 'teacher_count', 'completion_percentage'),
