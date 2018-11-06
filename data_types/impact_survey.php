@@ -18,15 +18,10 @@ $structure = array(
 	'user_id'	=> array('name', )
 );
 
-
-/*
-$order = array('national', 'city_id', 'center_id', 'batch_id', 'teacher.php')
- */
-
-function getCollectiveData($all_units, $next_level_key, $extra_user_filter = array()) {
+function getCollectiveData($all_units, $next_level_key, $extra_user_filter = []) {
 	global $ISParticipation, $is_event_id, $question_count, $model;
 
-	$data = array();
+	$data = [];
 
 	foreach ($all_units as $row) {
 		$id = $row['id'];
@@ -75,25 +70,24 @@ function getIndividualData($users) {
 		if($total_response_count and $possible_response_count)
 			$completion_percentage = round($total_response_count / $possible_response_count * 100, 2);
 
-
-		$data[$teacher_id] = array(
+		$data[$teacher_id] = [
 			'id'						=> $teacher_id,
 			'name'						=> $teacher_name,
 			'students_count' 			=> $total_student_count,
 			'completion_percentage'		=> $completion_percentage
-		);
+		];
 	}
 
-	return array(
-		'metadata'	=> array('parameter' => 'user_id'),
+	return [
+		'metadata'	=> ['parameter' => 'user_id'],
 		'data'		=> $data
-	);
+	];
 }
 
 function getUserData($user_id) {
 	global $model, $ISParticipation, $is_event_id;
 
-	$data = array();
+	$data = [];
 	$all_students = $model->getStudents($user_id);
 	$all_questions = $ISParticipation->getISQuestions();
 
@@ -102,7 +96,7 @@ function getUserData($user_id) {
 
 	 	$responses = $ISParticipation->getISResponses($is_event_id, $user_id, $student_id);
 
-	 	$response_data = array();
+	 	$response_data = [];
 	 	foreach ($all_questions as $question_id => $question) {
 	 		$response = i($responses, $question_id, 0);
 	 		$response_data[] = array(
@@ -113,7 +107,7 @@ function getUserData($user_id) {
 
 		$data[] = array(
 			'title'		=> $student['name'],
-			'metadata'	=> array(),
+			'metadata'	=> [],
 			'data'		=> $response_data
 		);
 	}

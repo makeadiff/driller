@@ -32,7 +32,7 @@ class Impact_Survey_Participation {
 			INNER JOIN Level L ON L.id=SL.level_id
 			INNER JOIN UserBatch UB ON UB.level_id=SL.level_id
 			WHERE L.year = $year AND S.status='1' AND UB.user_id IN (" . implode(",", $teacher_ids) . ")
-			GROUP BY SL.level_id");
+			GROUP BY UB.user_id");
 
 		return $students;
 	}
