@@ -1,11 +1,12 @@
 <?php
 $page_title = 'CFR Participation';
 
+$target = 12000;
 $structure = array(
-	'national'	=> array('name', 'user_count', 'participation_percentage'),
+	'national'	=> array('name', 'user_count', 'number_of_users_who_reached_target', 'participation_percentage'),
 	'city_id'	=> array(
-						'center_id'		=> array('name', 'user_count', 'participation_percentage'),
-						'vertical_id'	=> array('name', 'user_count', 'participation_percentage'),
+						'center_id'		=> array('name', 'user_count', 'number_of_users_who_reached_target', 'participation_percentage'),
+						'vertical_id'	=> array('name', 'user_count', 'number_of_users_who_reached_target', 'participation_percentage'),
 					),
 	'center_id'	=> array('name', 'user_count', 'participation_percentage'),
 	'batch_id'	=> array('name', 'money_raised', 'donation_count'),
@@ -26,16 +27,24 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 		$user_count = count($all_users);
 		if(!$user_count) continue;
 
-		$donation_counts = $participation_model->getDonations(array_keys($all_users));
-		$users_fundraised_count = count($donation_counts);
+		$donations = $participation_model->getDonations(array_keys($all_users));
+		$users_fundraised_count = count($donations);
 		$participation_percentage = round($users_fundraised_count / $user_count * 100, 2);
+		$users_who_reached_target_count = array_reduce($donations, function ($carry, $item) {
+			global $target;
+			if($item['total'] > $target) $carry++;
+
+			return $carry;
+		}, 0);
+		$target_percentage = round($users_who_reached_target_count / $user_count * 100, 2);
 
 		$data_row = array(
 			'id'	=> $id,
 			'name'	=> $row['name'],
 			'user_count' => $user_count,
 			'users_who_fundraised' => $users_fundraised_count,
-			'participation_percentage'	=> $participation_percentage
+			'number_of_users_who_reached_target' => $users_who_reached_target_count,
+			'participation_percentage'	=> $participation_percentage,
 		);
 
 		$data[] = $data_row;

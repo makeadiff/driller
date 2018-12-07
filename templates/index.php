@@ -45,7 +45,7 @@ foreach($data as $data_row) {
 			if($key == 'name' and $data_row['metadata']['parameter']) {
 				echo "<td><a href='" . getLink('', array($data_row['metadata']['parameter'] => $row['id']), true) . "'>$value</a></td>";
 			
-			} elseif(stripos($key, 'percent')) { ?>
+			} elseif(stripos($key, 'percent') !== false) { ?>
 				<td class="progress" title="<?php echo $row[$key] ?>%">
 				<?php if($row[$key]) { ?><div class="complete" style="width:<?php echo $row[$key] ?>%;">&nbsp;</div><?php } ?>
 				<?php if(100-$row[$key] > 0) { ?><div class="incomplete" style="width:<?php echo 100-$row[$key] ?>%;">&nbsp;</div><?php } ?>
