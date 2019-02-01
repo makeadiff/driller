@@ -45,12 +45,16 @@ foreach($data as $data_row) {
 			if($key == 'name' and $data_row['metadata']['parameter']) {
 				echo "<td><a href='" . getLink('', array($data_row['metadata']['parameter'] => $row['id']), true) . "'>$value</a></td>";
 			
-			} elseif(stripos($key, 'percent') !== false) { ?>
+			} elseif(stripos($key, 'percent') !== false or stripos($key, '%') !== false) { 
+				if(stripos($key, 'percent') !== false) { ?>
 				<td class="progress" title="<?php echo $row[$key] ?>%">
 				<?php if($row[$key]) { ?><div class="complete" style="width:<?php echo $row[$key] ?>%;">&nbsp;</div><?php } ?>
 				<?php if(100-$row[$key] > 0) { ?><div class="incomplete" style="width:<?php echo 100-$row[$key] ?>%;">&nbsp;</div><?php } ?>
 				</td>
-			<?php
+				<?php
+				} else {
+					echo "<td>$value%</td>";
+				}
 				if(!isset($total_row[$key. '_total'])) {
 					$total_row[$key. '_total'] = 0;
 					$total_row[$key. '_count'] = 0;
@@ -78,6 +82,9 @@ foreach($data as $data_row) {
 					<?php if(100-$value > 0) { ?><div class="incomplete" style="width:<?php echo 100-$value ?>%;">&nbsp;</div><?php } ?>
 				</td>
 				<?php
+			} elseif(stripos($key, '%')) {
+				$value = round($total_row[$key . '_total'] / $total_row[$key . '_count'], 2);
+				echo "<td><strong>" . $value . "%</strong></td>";
 			} else {
 				$value = $total_row[$key];
 

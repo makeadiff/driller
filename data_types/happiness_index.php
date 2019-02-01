@@ -31,11 +31,11 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 
 		$filled = $hi_model->getResponses($survey_id, array_keys($all_users));
 		$filled_users = count($filled);
-		$response_sum = array_reduce($filled, function($carried, $value) {
-			return ($carried + $value['average_response']);
-		}, 0);
-		$average_rating = 0;
-		if($filled_users) $average_rating = round($response_sum / $filled_users, 2);
+		// $response_sum = array_reduce($filled, function($carried, $value) {
+		// 	return ($carried + $value['average_response']);
+		// }, 0);
+		// $average_rating = 0;
+		// if($filled_users) $average_rating = round($response_sum / $filled_users, 2);
 
 		$filled_percent = round($filled_users / $user_count * 100, 2);
 
@@ -44,12 +44,16 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 			'name'			=> $row['name'],
 			'user_count' 	=> $user_count,
 			'filled'		=> $filled_users,
-			'average_rating'=> $average_rating,
-			'filled_%'		=> $filled_percent . '%',
+			// 'average_rating'=> $average_rating,
+			'filled_%'		=> $filled_percent,
 		];
 
 		$data[] = $data_row;
 	}
+	usort($data, function($a, $b) {
+		if($a['filled_%'] == $b['filled_%']) return 0;
+		return ($a['filled_%'] < $b['filled_%']) ? -1 : 1;
+	});
 
 	return $data;
 }
