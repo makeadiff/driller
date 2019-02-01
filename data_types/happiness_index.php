@@ -45,7 +45,7 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 			'user_count' 	=> $user_count,
 			'filled'		=> $filled_users,
 			'average_rating'=> $average_rating,
-			'filled_percent'=> $filled_percent,
+			'filled_%'		=> $filled_percent . '%',
 		];
 
 		$data[] = $data_row;
@@ -64,8 +64,9 @@ function getIndividualData($users) {
 	foreach ($users as $id => $name) {
 		$data[] = [
 			'id'	=> $id,
-			'name'	=> $name,
-			'average_rating' => isset($responses[$id]) ? round($responses[$id]['average_response'], 2) : '',
+			'name'	=> "<a href='../../apps/damrof/individual_responses.php?survey_id=$survey_id&responder_id=$id'>$name</a>",
+			'filled'=> isset($responses[$id]) ? 'Yes' : 'No',
+			// 'average_rating' => isset($responses[$id]) ? round($responses[$id]['average_response'], 2) : '',
 			// 'time_of_signing' => (!empty($responses[$id])) ? date($config['time_format_php'], strtotime($responses[$id])) : '',
 		];
 	}
