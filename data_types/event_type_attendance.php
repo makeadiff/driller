@@ -12,6 +12,10 @@ $structure = array(
 	'vertical_id'=>array('name', 'user_count', 'attended_percentage'),
 );
 $event_type_id = i($QUERY, 'event_type_id');
+$starts_on = i($QUERY, 'starts_on');
+$ends_on = i($QUERY, 'ends_on');
+if($starts_on) $event_model->starts_on = $starts_on . ' 00:00:00';
+if($ends_on) $event_model->ends_on = $ends_on . ' 23:59:59';
 if(!$event_type_id) die("Please provide the event_type_id");
 
 $page_title = $event_model->getEventType($event_type_id);
@@ -31,14 +35,33 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 		$user_count = count($all_users);
 		if(!$user_count) continue;
 
-		$attended = $event_model->getCollectiveStatus($event_type_id, array_keys($all_users), '1');
-		$attended_count = count($attended);
-		$attended_percentage = round($attended_count / $user_count * 100, 2);
+		$attended = $event_model->getCollectiveStatus($event_type_id, array_keys($all_users));
+		$invited_count = count($attended);
+		$attended_count = array_reduce($attended, function($carry, $item) {
+			if($item['present'] == '1') $carry++; // Count all the people who actually came.
+			return $carry;
+		}, 0);
+
+
+		$attended_percentage = 0;
+		if($invited_count and $attended_count) $attended_percentage = round($attended_count / $invited_count * 100, 2);
+		$unique_event_count = array_reduce($attended, function($carry, $item) {
+			static $event_ids = [];
+
+			if(!in_array($item['event_id'], $event_ids)) {
+				$event_ids[] = $item['event_id'];
+				$carry++;
+			}
+
+			return $carry;
+		}, 0);
 
 		$data[] = array(
 			'id'					=> $id,
 			'name'					=> $row['name'],
-			'user_count' 			=> $user_count,
+			'event_count'			=> $unique_event_count,
+			// 'user_count' 			=> $user_count,
+			'invited'	 			=> $invited_count,
 			'attended'	 			=> $attended_count,
 			'attended_percentage'	=> $attended_percentage
 		);
