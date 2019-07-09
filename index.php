@@ -13,14 +13,15 @@ $current_level = 'national';
 
 foreach ($order as $parameter) {
 	$id = i($QUERY, $parameter);
-	if($id or $parameter == 'national') {
+
+	if($id !== false or $parameter == 'national') {
 		$order_index = array_search($parameter, $order);
 		$next_level_key = i($order, $order_index - 1);
 
 		$page_title = getTitle($id, $parameter);
 
 		list($data, $cache_key) = getCacheAndKey('Driller', ['data_type' => $data_type, 'parameter' => $parameter, 'id' => $id]);
-		if(!$data or 1) {
+		if(!$data or 1) { // :TODO: Cache disabled
 			$data = getListingData($parameter, $id);
 			setCache($cache_key, $data);
 		}

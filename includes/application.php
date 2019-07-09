@@ -11,7 +11,8 @@ function getTitle($id, $type) {
 	} elseif($type == 'center_id') {
 		$name = $model->getCenterName($id);
 	} elseif($type == 'city_id') {
-		$name = $model->getCityName($id);
+		if($id == 0) $name = 'National';
+		else $name = $model->getCityName($id);
 	} elseif($type == 'vertical_id') {
 		$name = $model->getVerticalName($id);
 	} else { // National
@@ -71,7 +72,7 @@ function getListingData($parameter, $id) {
 					$all_centers = $model->getCenters($id);
 					$split_data[] = array(
 						'metadata' 	=> array('parameter' => 'center_id'),
-						'title'		=> 'Centers',
+						'title'		=> 'Shelters',
 						'data'		=> getCollectiveData($all_centers, $key, array('city_id' => $id))
 					);
 				}

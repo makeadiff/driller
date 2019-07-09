@@ -15,10 +15,14 @@ if(isset($custom_pages)) {
 $total_row = array();
 foreach($data as $data_row) {
 	$title = i($data_row, 'title');
-	if($title) echo "<h3>$title</h3>";
 
 	$first_row = reset($data_row['data']);
-	$width = 100 / count($first_row);
+	if($first_row) {
+		if($title) echo "<h3>$title</h3>";
+		$width = 100 / count($first_row);
+	} else {
+		$width = 0;
+	}
 	?>
 
 <table class="table table-striped">
@@ -27,7 +31,7 @@ foreach($data as $data_row) {
 		if($first_row) {
 			foreach ($first_row as $key => $value) {
 				if($key == 'id') continue;
-				elseif($key == 'name') $total_row[$key] = 'Total';
+				elseif($key == 'name') $total_row[$key] = 'National';
 				else {
 					$total_row[$key] = 0;
 				}
@@ -45,7 +49,7 @@ foreach($data as $data_row) {
 			if($key == 'name' and $data_row['metadata']['parameter']) {
 				echo "<td><a href='" . getLink('', array($data_row['metadata']['parameter'] => $row['id']), true) . "'>$value</a></td>";
 			
-			} elseif(stripos($key, 'percent') !== false or stripos($key, '%') !== false) { 
+			} elseif((stripos($key, 'percent') !== false or stripos($key, '%') !== false) and is_numeric($row[$key])) { 
 				if(stripos($key, 'percent') !== false) { ?>
 				<td class="progress" title="<?php echo $row[$key] ?>%">
 				<?php if($row[$key]) { ?><div class="complete" style="width:<?php echo $row[$key] ?>%;">&nbsp;</div><?php } ?>
@@ -87,6 +91,9 @@ foreach($data as $data_row) {
 				echo "<td><strong>" . $value . "%</strong></td>";
 			} else {
 				$value = $total_row[$key];
+
+				if($value == 'National' and i($QUERY, 'city_id') === false) 
+					$value = '<a href="' . getLink('', array($data_row['metadata']['parameter'] => 0), true) . "\">$value</a>";
 
 				echo "<td><strong>" . $value . "</strong></td>";
 			}

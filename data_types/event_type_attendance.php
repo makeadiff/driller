@@ -80,7 +80,6 @@ function getIndividualData($users) {
 			'id'	=> $id,
 			'name'	=> $name,
 			'attended' 	=> '',
-			'event_date'=> '',
 		];
 
 		$event_info = '';
