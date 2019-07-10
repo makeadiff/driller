@@ -4,7 +4,11 @@ require './common.php';
 $no_cache = i($QUERY, 'no_cache', false);
 $data_type = i($QUERY, 'data_type');
 
-if(!$data_type or !file_exists(joinPath('data_types', $data_type . '.php'))) die("Invalid Data Type");
+if(!$data_type or !file_exists(joinPath('data_types', $data_type . '.php'))) {
+	$all_data_types = ls('*.php', joinPath($config['site_folder'], 'data_types'));
+	render('list_data_types.php');
+	exit;
+}
 require(joinPath('data_types', $data_type . '.php'));
 
 $order = array_reverse(array_keys($structure));

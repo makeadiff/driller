@@ -8,7 +8,7 @@ $users = keyFormat($model->getUsers($QUERY));
 $aggreement_status = $cpp_agreement_model->getAgreementStatus(array_keys($users));
 
 showTop("Volunteers Who Haven't Signed the CPP Agreement");
-?>
+?><br /><br />
 <h1 class="title">Volunteers Who Haven't Signed the CPP Agreement</h1>
 
 <table class="table table-stripped">
