@@ -37,6 +37,7 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 			'name'			=> $row['name'],
 			'user_count' 	=> $user_count,
 			'agreed_count'	=> $agreed_users,
+			'agreement_%'	=> $agreement_percentage,
 			'agreement_percentage'	=> $agreement_percentage,
 		];
 
