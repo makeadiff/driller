@@ -1,5 +1,4 @@
 <?php
-// require(dirname(dirname(__FILE__)) . '/../reports/includes/application.php');
 $current_user = accessControl([]);
 
 function getTitle($id, $type) {

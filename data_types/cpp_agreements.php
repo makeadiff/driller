@@ -20,6 +20,8 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 
 	$data = [];
 
+	$extra_user_filter['not_city_id'] = 28; // We don't want Test city's data to pollute the final numbers.
+
 	foreach ($all_units as $row) {
 		$id = $row['id'];
 

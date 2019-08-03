@@ -1,4 +1,6 @@
 <?php
+// NOT USED. Right now, the common model that is used is the apps/common/models/Common.php
+// 
 /// Common model. Includes all the neccessay data interactions. Not enough to make seperate models yet.
 class Common {
 	private $sql;

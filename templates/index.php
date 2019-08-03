@@ -53,7 +53,7 @@ foreach($data as $data_row) {
 				if(stripos($key, 'percent') !== false) { ?>
 				<td class="progress" title="<?php echo $row[$key] ?>%">
 				<?php if($row[$key]) { ?><div class="complete" style="width:<?php echo $row[$key] ?>%;">&nbsp;</div><?php } ?>
-				<?php if(100-$row[$key] > 0) { ?><div class="incomplete" style="width:<?php echo 100-$row[$key] ?>%;">&nbsp;</div><?php } ?>
+				<?php if(100 - $row[$key] > 0) { ?><div class="incomplete" style="width:<?php echo 100 - $row[$key] ?>%;">&nbsp;</div><?php } ?>
 				</td>
 				<?php
 				} else {
@@ -67,7 +67,9 @@ foreach($data as $data_row) {
 				$total_row[$key. '_count'] ++;
 			} else {
 				if(is_numeric($value)) $total_row[$key] += $value;
-				echo "<td>$value</td>";
+				$attr = '';
+				if($key == 'name' and isset($row['id'])) $attr = " title='ID: $row[id]'";
+				echo "<td$attr>$value</td>";
 			}
 		}
 		?>
@@ -83,7 +85,7 @@ foreach($data as $data_row) {
 				?>
 				<td class="progress" title="<?php echo $value ?>%">
 					<?php if($value) { ?><div class="complete" style="width:<?php echo $value ?>%;">&nbsp;</div><?php } ?>
-					<?php if(100-$value > 0) { ?><div class="incomplete" style="width:<?php echo 100-$value ?>%;">&nbsp;</div><?php } ?>
+					<?php if(100 - $value > 0) { ?><div class="incomplete" style="width:<?php echo 100 - $value ?>%;">&nbsp;</div><?php } ?>
 				</td>
 				<?php
 			} elseif(stripos($key, '%')) {
