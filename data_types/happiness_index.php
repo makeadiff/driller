@@ -19,7 +19,7 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 	global $model, $hi_model;
 
 	$data = [];
-	$survey_id = 3;
+	$survey_id = 82;
 
 	foreach ($all_units as $row) {
 		$id = $row['id'];
