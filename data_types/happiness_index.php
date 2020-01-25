@@ -14,12 +14,12 @@ $structure = array(
 // $custom_pages = ['data_types/cpp_agreements/list_volunteers_not_signed.php' => 'List all volunteers who have not signed the agreement'];
 
 $hi_model = new Survey;
+$survey_id = 82;
 
 function getCollectiveData($all_units, $next_level_key, $extra_user_filter = []) {
-	global $model, $hi_model;
+	global $model, $hi_model, $survey_id;
 
 	$data = [];
-	$survey_id = 82;
 
 	foreach ($all_units as $row) {
 		$id = $row['id'];
@@ -59,9 +59,8 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 }
 
 function getIndividualData($users) {
-	global $hi_model, $config;
+	global $hi_model, $config, $survey_id;
 
-	$survey_id = 3;
 	$responses = $hi_model->getResponses($survey_id, array_keys($users));
 	
 	$data = [];

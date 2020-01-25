@@ -94,8 +94,11 @@ foreach($data as $data_row) {
 			} else {
 				$value = $total_row[$key];
 
-				if($value == 'National' and i($QUERY, 'city_id') === false) 
+				if($value == 'National' and i($QUERY, 'city_id') === false) {
 					$value = '<a href="' . getLink('', array($data_row['metadata']['parameter'] => 0), true) . "\">$value</a>";
+				}
+
+				if($value == 'National' and $current_level != 'national') $value = 'Total';
 
 				echo "<td><strong>" . $value . "</strong></td>";
 			}
