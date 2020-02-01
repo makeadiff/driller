@@ -17,15 +17,17 @@ class Event {
 		return $this->sql->getOne("SELECT name FROM Event_Type WHERE id=$event_type_id");
 	}
 
-	public function getCollectiveStatus($event_type_id, $user_ids, $present = false)
+	public function getEvent($event_id)
 	{
-		$attended = '';
-		if($present !== false) $attended = "AND present='$present'";
+		return $this->sql->getAssoc("SELECT id,name,description,place FROM Event WHERE id=$event_id");
+	}
 
-		return $this->sql->getAll("SELECT UE.user_id AS id, UE.event_id, UE.present,E.starts_on
+	public function getCollectiveStatus($event_id, $user_ids)
+	{
+		return $this->sql->getAll("SELECT UE.user_id AS id, UE.event_id, UE.user_choice, UE.present, E.starts_on
 									FROM UserEvent UE 
 									INNER JOIN Event E ON E.id=UE.event_id
 									WHERE E.status='1' AND E.starts_on >= '$this->starts_on' AND (E.ends_on <= '$this->ends_on' OR E.ends_on IS NULL)
-										AND E.event_type_id=$event_type_id AND UE.user_id IN (" . implode(",", $user_ids) . ") $attended");
+										AND E.id=$event_id AND UE.user_id IN (" . implode(",", $user_ids) . ")");
 	}
 }
