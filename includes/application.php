@@ -35,6 +35,10 @@ function getListingData($parameter, $id) {
 		$next_level_key = '';
 		$data = getUserData($id);
 
+	} elseif($parameter == 'student_id') {
+		$next_level_key = '';
+		$data = getStudentData($id);
+
 	} elseif($parameter == 'batch_id') {
 		$all_teachers = idNameFormat($model->getTeachers(array('batch_id' => $id)));
 		$next_level_key = '';
@@ -42,8 +46,15 @@ function getListingData($parameter, $id) {
 
 	} elseif($parameter == 'center_id') {
 		$center_id = i($QUERY, 'center_id');
-		$all_batches = $model->getBatches($center_id);
-		$data = getCollectiveData($all_batches, $next_level_key);
+
+		if($next_level_key == 'student_id') {
+			$all_students = $model->getStudentsInCenter($center_id);
+			$data = getCollectiveData($all_students, $next_level_key);
+
+		} else {
+			$all_batches = $model->getBatches($center_id);
+			$data = getCollectiveData($all_batches, $next_level_key);
+		}
 
 	} elseif($parameter == 'vertical_id') {
 		$city_id = i($QUERY, 'city_id', 0);
