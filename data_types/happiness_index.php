@@ -29,7 +29,7 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 
 		if(!$user_count) continue;
 
-		$filled = $hi_model->getResponses($survey_id, array_keys($all_users));
+		$filled = $hi_model->getResponseCount($survey_id, array_keys($all_users));
 		$filled_users = count($filled);
 		// $response_sum = array_reduce($filled, function($carried, $value) {
 		// 	return ($carried + $value['average_response']);
@@ -61,14 +61,14 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = [])
 function getIndividualData($users) {
 	global $hi_model, $config, $survey_id;
 
-	$responses = $hi_model->getResponses($survey_id, array_keys($users));
+	$responses = $hi_model->getResponseCount($survey_id, array_keys($users));
 	
 	$data = [];
 	foreach ($users as $id => $name) {
 		$data[] = [
 			'id'	=> $id,
 			'name'	=> "<a href='../../apps/damrof/individual_responses.php?survey_id=$survey_id&responder_id=$id'>$name</a>",
-			'filled'=> isset($responses[$id]) ? 'Yes' : 'No',
+			'filled'=> isset($responses[$id]) ? '<strong class="success-message">Yes</strong>' : '<strong class="error-message">No</strong>',
 			// 'average_rating' => isset($responses[$id]) ? round($responses[$id]['average_response'], 2) : '',
 			// 'time_of_signing' => (!empty($responses[$id])) ? date($config['time_format_php'], strtotime($responses[$id])) : '',
 		];
