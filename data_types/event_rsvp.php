@@ -2,14 +2,14 @@
 $event_model = new Event;
 
 $structure = array(
-	'national'	=> array('name', 'user_count', 'coming_percentage'),
+	'national'	=> array('name', 'user_count', 'coming_%'),
 	'city_id'	=> array(
-						'center_id'		=> array('name', 'user_count', 'coming_percentage'),
-						'vertical_id'	=> array('name', 'user_count', 'coming_percentage'),
+						'center_id'		=> array('name', 'user_count', 'coming_%'),
+						'vertical_id'	=> array('name', 'user_count', 'coming_%'),
 					),
-	'center_id'	=> array('name', 'user_count', 'coming_percentage'),
-	'batch_id'	=> array('name', 'user_count', 'coming_percentage'),
-	'vertical_id'=>array('name', 'user_count', 'coming_percentage'),
+	'center_id'	=> array('name', 'user_count', 'coming_%'),
+	'batch_id'	=> array('name', 'user_count', 'coming_%'),
+	'vertical_id'=>array('name', 'user_count', 'coming_%'),
 );
 $event_id = i($QUERY, 'event_id');
 $starts_on = i($QUERY, 'starts_on');
@@ -62,7 +62,7 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 			'user_count' 			=> $user_count,
 			'invited'	 			=> $invited_count,
 			'coming'	 			=> $coming_count,
-			'coming_percentage'	=> $coming_percentage
+			'coming_%'	=> $coming_percentage
 		);
 	}
 
