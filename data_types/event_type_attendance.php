@@ -2,14 +2,14 @@
 $event_model = new Event;
 
 $structure = array(
-	'national'	=> array('name', 'user_count', 'attended_percentage'),
+	'national'	=> array('name', 'user_count', 'rsvp_yes', 'attended_percentage'),
 	'city_id'	=> array(
-						'center_id'		=> array('name', 'user_count', 'attended_percentage'),
-						'vertical_id'	=> array('name', 'user_count', 'attended_percentage'),
+						'center_id'		=> array('name', 'user_count', 'rsvp_yes','attended_percentage'),
+						'vertical_id'	=> array('name', 'user_count', 'rsvp_yes','attended_percentage'),
 					),
-	'center_id'	=> array('name', 'user_count', 'attended_percentage'),
-	'batch_id'	=> array('name', 'user_count', 'attended_percentage'),
-	'vertical_id'=>array('name', 'user_count', 'attended_percentage'),
+	'center_id'	=> array('name', 'user_count', 'rsvp_yes','attended_percentage'),
+	'batch_id'	=> array('name', 'user_count', 'rsvp_yes','attended_percentage'),
+	'vertical_id'=>array('name', 'user_count', 'rsvp_yes','attended_percentage'),
 );
 $event_type_id = i($QUERY, 'event_type_id');
 $starts_on = i($QUERY, 'starts_on');
@@ -30,7 +30,6 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 		$id = $row['id'];
 
 		$user_search_parameters = array_merge([$next_level_key => $id], $extra_user_filter);
-		// dump($user_search_parameters);
 		$all_users = idNameFormat($model->getUsers($user_search_parameters)); // Different data based on City, Center, Batch, etc.
 		$user_count = count($all_users);
 		if(!$user_count) continue;
@@ -39,6 +38,10 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 		$invited_count = count($attended);
 		$attended_count = array_reduce($attended, function($carry, $item) {
 			if($item['present'] == '1') $carry++; // Count all the people who actually came.
+			return $carry;
+		}, 0);
+		$rsvp_yes = array_reduce($attended, function($carry, $item) {
+			if($item['user_choice'] == '1') $carry++; // Count all the people who actually came.
 			return $carry;
 		}, 0);
 
@@ -62,6 +65,7 @@ function getCollectiveData($all_units, $next_level_key, $extra_user_filter = arr
 			'event_count'			=> $unique_event_count,
 			// 'user_count' 			=> $user_count,
 			'invited'	 			=> $invited_count,
+			'rsvp_yes'				=> $rsvp_yes,
 			'attended'	 			=> $attended_count,
 			'attended_percentage'	=> $attended_percentage
 		);

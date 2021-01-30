@@ -25,7 +25,7 @@ foreach ($order as $parameter) {
 		$page_title = getTitle($id, $parameter);
 
 		list($data, $cache_key) = getCacheAndKey('Driller', ['data_type' => $data_type, 'parameter' => $parameter, 'id' => $id]);
-		if(!$data or 1) { // add a ' or 1' to disable Cache
+		if(!$data) { // add a ' or 1' to disable Cache
 			$data = getListingData($parameter, $id);
 			setCache($cache_key, $data);
 		}
