@@ -11,6 +11,8 @@ showTop("Volunteers Who Haven't Signed the CPP Agreement");
 ?><br /><br />
 <h1 class="title">Volunteers Who Haven't Signed the CPP Agreement</h1>
 
+<a href="<?php echo $config['site_home']; ?>?data_type=cpp_agreements">Back to Main Page</a>
+
 <table class="table table-stripped">
 	<tr><th>Count</th><th>ID</th><th>Name</th><th>Email</th><th>Phone</th></tr>
 	<?php 

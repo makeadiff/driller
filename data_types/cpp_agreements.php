@@ -11,7 +11,10 @@ $structure = array(
 	'batch_id'	=> array('name', 'date', 'agreed_count', 'agreement'),
 	'vertical_id'=>array('name', 'date', 'agreed_count', 'agreement'),
 );
-$custom_pages = ['data_types/cpp_agreements/list_volunteers_not_signed.php' => 'List all volunteers who have not signed the agreement'];
+$custom_pages = [
+	'data_types/cpp_agreements/list_volunteers_not_signed.php' => 'List all volunteers who have not signed the agreement',
+	'data_types/cpp_agreements/all_volunteers.php' => 'All Volunteers CPP Status'
+];
 
 $cpp_agreement_model = new CPP_Agreement;
 
