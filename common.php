@@ -1,4 +1,4 @@
 <?php
-require '../common/common.php';
+require '../commons/common.php';
 
 $model = new Common;
