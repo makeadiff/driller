@@ -51,9 +51,14 @@ function getListingData($parameter, $id) {
 			$all_students = $model->getStudentsInCenter($center_id);
 			$data = getCollectiveData($all_students, $next_level_key);
 
-		} else {
+		} elseif($next_level_key == 'batch_id') {
 			$all_batches = $model->getBatches($center_id);
 			$data = getCollectiveData($all_batches, $next_level_key);
+		
+		} else {
+			$all_users = idNameFormat($model->getUsers(array('center_id' => $id)));
+			$next_level_key = '';
+			$data = getIndividualData($all_users);
 		}
 
 	} elseif($parameter == 'vertical_id') {

@@ -7,8 +7,8 @@ $structure = array(
 						'center_id'		=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
 						'vertical_id'	=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
 					),
-	'center_id'	=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
-	'batch_id'	=> array('name', 'date', 'agreed_count', 'agreement'),
+	// 'center_id'	=> array('name', 'user_count', 'agreed_count', 'agreement_percentage'),
+	'center_id'	=> array('name', 'date', 'agreed_count', 'agreement'),
 	'vertical_id'=>array('name', 'date', 'agreed_count', 'agreement'),
 );
 $custom_pages = [
