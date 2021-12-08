@@ -1,5 +1,5 @@
 <?php
-require dirname(dirname(dirname(dirname(__FILE__)))) . '/common/common.php';
+require dirname(dirname(dirname(__DIR__))) . '/commons/common.php';
 $cpp_agreement_model = new CPP_Agreement;
 
 $model = new Common;
@@ -11,7 +11,7 @@ showTop("Volunteers Who Haven't Signed the CPP Agreement");
 ?><br /><br />
 <h1 class="title">Volunteers Who Haven't Signed the CPP Agreement</h1>
 
-<a href="<?php echo $config['site_home']; ?>?data_type=cpp_agreements">Back to Main Page</a>
+<a href="<?php echo $config['app_url']; ?>?data_type=cpp_agreements">Back to Main Page</a>
 
 <table class="table table-stripped">
 	<tr><th>Count</th><th>ID</th><th>Name</th><th>Email</th><th>Phone</th></tr>
