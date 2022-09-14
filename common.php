@@ -1,4 +1,4 @@
 <?php
-require '../commons/common.php';
+require __DIR__ . '/../commons/common.php';
 
 $model = new Common;
